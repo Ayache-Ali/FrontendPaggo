@@ -13,6 +13,10 @@ export default function UploadPage() {
   const router = useRouter();
   const [extraText, setExtraText] = useState("");
   const [Chat, setChat] = useState("");
+  const [errorBusca, setErrorBusca] = useState("");
+  const [errorUpload, setErrorUpload] = useState("");
+  const [errorDownload, setErrorDownload] = useState("");
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -26,6 +30,7 @@ export default function UploadPage() {
   const fetchFiles = async (id) => {
     try {
       const res = await fetch(`http://localhost:5000/documents/user/${id}`);
+
       if (!res.ok) {
         throw new Error("Erro ao buscar arquivos");
       }
@@ -43,6 +48,9 @@ export default function UploadPage() {
   };
 
   const handleFileSelect = async (e) => {
+    setChat("");
+    setErrorDownload("");
+    setErrorBusca("Processando, aguarde...");
     const selectedId = e.target.value; 
     setSelectedFileId(selectedId); 
     await fetchImage(selectedId);
@@ -59,9 +67,11 @@ export default function UploadPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorUpload("Enviando arquivo, aguarde...");
 
     if (!file) {
-      alert("Por favor, selecione um arquivo.");
+      //alert("Por favor, selecione um arquivo.");
+      setErrorUpload("Por favor, selecione um arquivo.");
       return;
     }
 
@@ -76,14 +86,17 @@ export default function UploadPage() {
         body: formData,
       });
       if (res.ok) {
-        alert("Arquivo e dados enviados com sucesso!");
+        //alert("Arquivo e dados enviados com sucesso!");
+        setErrorUpload("Arquivo e dados enviados com sucesso!");
         const nameID = localStorage.getItem("id");
         fetchFiles(nameID); 
       } else {
-        alert("Erro ao enviar o arquivo ou dados.");
+        //alert("Erro ao enviar o arquivo ou dados.");
+        setErrorUpload("Erro ao enviar o arquivo ou dados.");
       }
     } catch (error) {
-      alert("Erro ao conectar com o backend.");
+      //alert("Erro ao conectar com o backend.");
+      setErrorUpload("Erro ao conectar com o backend.");
       console.error(error);
     }
   };
@@ -113,37 +126,43 @@ export default function UploadPage() {
       const res = await fetch(`http://localhost:5000/documents/download/${id}`);
       const data = await res.json();
       if (res.ok) {
+        setErrorBusca("");
         setFileData(data); 
       } else {
-        console.error("Erro ao carregar a imagem:", res.statusText);
+        //console.error("Erro ao carregar a imagem:", res.statusText);
+        setErrorBusca("Erro ao carregar a imagem.");
       }
     } catch (error) {
-      console.error("Erro ao carregar a imagem:", error);
+      //console.error("Erro ao carregar a imagem:", error);
+      setErrorBusca("Erro ao carregar a imagem.");
     }
   };
 
 
   const handleUpdateText = async () => {
+    setChat("");
+    setErrorDownload("Processando, aguarde...");
     if (!selectedFileId) {
-      alert("Selecione um arquivo primeiro!");
+      //alert("Selecione um arquivo primeiro!");
+      setErrorDownload("Selecione um arquivo primeiro!");
       return;
     }
     try {
 
       const res = await fetch(`http://localhost:5000/documents/${selectedFileId}/explain-text`, {
-      
+        
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ apiKey:extraText }),
       });
       const data = await res.json();
       if (res.ok) {
-        alert("Texto atualizado com sucesso!");
-
-        fetchImage(selectedFileId); // Atualiza os dados do arquivo selecionado
+        setErrorDownload("");
+        fetchImage(selectedFileId); 
         setChat(data.explanation);
       } else {
-        alert("Erro ao atualizar o texto.")
+        //alert("Erro ao atualizar o texto.")
+        setErrorDownload("Erro ao solicitar explicação, a chave foi inserida?");
       }
     } catch (error) {
       console.error("Erro ao atualizar o texto:", error);
@@ -152,7 +171,8 @@ export default function UploadPage() {
 
   const handleDownloadZip = async () => {
     if (!fileData) {
-      alert("Nenhum arquivo selecionado.");
+      //alert("Nenhum arquivo selecionado.");
+      setErrorDownload("Nenhum arquivo selecionado.");
       return;
     }
 
@@ -197,6 +217,7 @@ export default function UploadPage() {
         </div>
         <br />
         <button type="submit">Enviar</button>
+        {errorUpload && <p style={{ color: "black" }}>{errorUpload}</p>}
       </form>
 
       <h1>Selecione um arquivo</h1>
@@ -209,6 +230,7 @@ export default function UploadPage() {
               {file.filename}
             </option>
             ))}
+            {errorBusca && <p style={{ color: "black" }}>{errorBusca}</p>}
         </select>
       </div>
 
@@ -241,6 +263,7 @@ export default function UploadPage() {
         <br />
         <br />
         <button onClick={handleDownloadZip}>Baixar Arquivo + Textos</button>
+        {errorDownload && <p style={{ color: "black" }}>{errorDownload}</p>}
       </div>
       
       <h1>Criação de Usuário</h1>
@@ -267,7 +290,7 @@ export default function UploadPage() {
           />
         </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>} {/* Exibe o erro, se houver */}
+        {error && <p style={{ color: "Black" }}>{error}</p>} 
         <br />
         <button type="submit">Enviar</button>
       </form>
