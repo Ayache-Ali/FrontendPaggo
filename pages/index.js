@@ -18,8 +18,9 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
+      
     });
-
+    setError(body);
     const data = await response.json();
 
     if (data.message === "Login successful") { 
