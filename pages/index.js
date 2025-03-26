@@ -10,7 +10,7 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     setError("Processando, aguarde...");
-    setError(apiUrl);
+    setError(`${apiUrl}/auth/login`);
     e.preventDefault();
     const response = await fetch(`${apiUrl}/auth/login`, {  
       method: "POST",
