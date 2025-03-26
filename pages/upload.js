@@ -16,6 +16,7 @@ export default function UploadPage() {
   const [errorBusca, setErrorBusca] = useState("");
   const [errorUpload, setErrorUpload] = useState("");
   const [errorDownload, setErrorDownload] = useState("");
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,7 +30,7 @@ export default function UploadPage() {
  
   const fetchFiles = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/documents/user/${id}`);
+      const res = await fetch(`${apiUrl}/documents/user/${id}`);
 
       if (!res.ok) {
         throw new Error("Erro ao buscar arquivos");
@@ -81,7 +82,7 @@ export default function UploadPage() {
     formData.append("userId", nameID);
 
     try {
-      const res = await fetch("http://localhost:5000/documents/upload", { 
+      const res = await fetch(`${apiUrl}/documents/upload`, { 
         method: "POST",
         body: formData,
       });
@@ -104,7 +105,7 @@ export default function UploadPage() {
   const handleSubmit2 = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:5000/users/register", { 
+    const response = await fetch(`${apiUrl}/users/register`, { 
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -123,7 +124,7 @@ export default function UploadPage() {
 
   const fetchImage = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/documents/download/${id}`);
+      const res = await fetch(`${apiUrl}/documents/download/${id}`);
       const data = await res.json();
       if (res.ok) {
         setErrorBusca("");
@@ -149,7 +150,7 @@ export default function UploadPage() {
     }
     try {
 
-      const res = await fetch(`http://localhost:5000/documents/${selectedFileId}/explain-text`, {
+      const res = await fetch(`${apiUrl}/documents/${selectedFileId}/explain-text`, {
         
         method: "POST",
         headers: { "Content-Type": "application/json" },

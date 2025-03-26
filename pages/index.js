@@ -5,13 +5,13 @@ export default function Home() {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");  
-
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
   const router = useRouter(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:5000/auth/login", {  
+    const response = await fetch(`${apiUrl}/auth/login`, {  
       method: "POST",
       headers: {
         "Content-Type": "application/json",
