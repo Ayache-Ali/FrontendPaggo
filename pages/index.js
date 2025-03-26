@@ -20,9 +20,9 @@ export default function Home() {
       body: JSON.stringify({ email, password }),
       
     });
-    setError(body);
-    const data = await response.json();
 
+    const data = await response.json();
+    setError(data.message);
     if (data.message === "Login successful") { 
       localStorage.setItem("id", data.id);
       localStorage.setItem("token", data.token);
