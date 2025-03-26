@@ -5,7 +5,7 @@ export default function Home() {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");  
-  const apiUrl = env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
   const router = useRouter(); 
 
   const handleSubmit = async (e) => {
