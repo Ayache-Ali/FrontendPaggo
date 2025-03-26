@@ -104,7 +104,7 @@ export default function UploadPage() {
 
   const handleSubmit2 = async (e) => {
     e.preventDefault();
-
+    setError("Processando, aguarde...");
     const response = await fetch(`${apiUrl}/users/register`, { 
       method: "POST",
       headers: {
@@ -112,6 +112,7 @@ export default function UploadPage() {
       },
       body: JSON.stringify({ email, password }),
     });
+    
 
     const data = await response.json();
 
