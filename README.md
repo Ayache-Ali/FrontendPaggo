@@ -6,7 +6,7 @@ First, Run the following commands to download dependencies and config the Prisma
 
 ```bash
 $ npm install
-$ npx prisma generate
+
 ```
 
 Now, run the development server:
