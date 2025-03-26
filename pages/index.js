@@ -9,6 +9,8 @@ export default function Home() {
   const router = useRouter(); 
 
   const handleSubmit = async (e) => {
+    setError("Processando, aguarde...");
+    setError(apiUrl);
     e.preventDefault();
     const response = await fetch(`${apiUrl}/auth/login`, {  
       method: "POST",
@@ -55,7 +57,7 @@ export default function Home() {
           />
         </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>} {}
+        {error && <p style={{ color: "black" }}>{error}</p>} {}
 
         <button type="submit">Enviar</button>
       </form>
