@@ -16,7 +16,7 @@ export default function UploadPage() {
   const [errorBusca, setErrorBusca] = useState("");
   const [errorUpload, setErrorUpload] = useState("");
   const [errorDownload, setErrorDownload] = useState("");
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  const apiUrl = 'http://localhost:5000';
 
   useEffect(() => {
     const token = localStorage.getItem("token");
