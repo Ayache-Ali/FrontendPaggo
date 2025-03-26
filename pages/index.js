@@ -10,7 +10,6 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const response = await fetch(`${apiUrl}/auth/login`, {  
       method: "POST",
       headers: {
